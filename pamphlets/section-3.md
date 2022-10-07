@@ -157,9 +157,32 @@ continue(inside the if or outside of if after it) will never get executed if the
 ![img.png](/img/section-3/23-014-7.png)
 
 ## 24-015 Demo Looping
+In:
+```go
+for i := 1; i <= 10; i++ {
+		sum += i
+		fmt.Println("Sum is", sum)
+	}
+```
+Whenever the loop body executes and gets the end, the post statement will be run(in this case i will be incremented by 1) and the condition will be checked again.
+Run the demo with:
+```shell
+go run ./demo/loops
+```
 
 ## 25-016 Exercise Looping
 
 ## 26-017 Section Review Dice Roller
+Go package registry: [link](https://pkg.go.dev/std)
+
+Go to sr-dice exercise.
+
+We're gonna need random numbers for dice rolling.
+
+The first thing we need to od is seed the random number generator. What seeding does is it sets the initial value for the random numbers. So if you use the
+same seed value, whenever you run the program, you will get the same random numbers. To get random numbers in each program run, use the current time in `rand.Seed()`. So the
+seed value is gonna be the current time which is gonna be different between program runs.
+
+The UnixNano function will get the number of nanoseconds since the start of the unix epoch.
 
 ## 27-018 LinkedIn Endorsements

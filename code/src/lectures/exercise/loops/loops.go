@@ -15,4 +15,20 @@ package main
 import "fmt"
 
 func main() {
+	// approach 2:
+	for i := 1; i <= 50; i++ {
+		divisibleBy3 := i%3 == 0
+		divisibleBy5 := i%5 == 0
+
+		/* IMPORTANT: This more specific condition should always come first. Because numbers can be divisible by both 3 and 5 */
+		if divisibleBy3 && divisibleBy5 {
+			fmt.Println("FizzBuzz")
+		} else if divisibleBy3 {
+			fmt.Println("Fizz")
+		} else if divisibleBy5 {
+			fmt.Println("Buzz")
+		} else {
+			fmt.Println(i)
+		}
+	}
 }
