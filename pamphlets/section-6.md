@@ -104,8 +104,20 @@ Try running the program with both letters and numbers: 1 a b c 1 1 1
 
 
 ## 66-010 Type Embedding
+With embedded interfaces, any change to the embedded interfaces, will automatically propagate to any interfaces that have them embedded. The end result, is this
+allows you to change interfaces and any issues that come up, will be compiler errors instead of silent bugs later. 
+
 ## 67-011 Demo Type Embedding
 ## 68-012 Exercise Type Embedding
 ## 69-013 Generics
+```go
+func name[T constraint, U constraintA | constraintB](a T, b U) T {}
+```
+Within [], we're defining generic constraints. We're saying that there is some type(generic) named `T` and it is constrained by `constraint` interface.
+Then we have another generic named `U` and it's constrained by either `constraintA` or `constraintB` interfaces. We can then use the T and U types as our
+type annotations in parameter list and return type of function. In function params we're saying that whatever data type `a` happens to be, it must implements
+the `constraint` interface and whatever type b happens to be, must either implements the `constraintA` interface or `constraintB` interface. Also about the
+return type, whatever type we return for this function, must implement the `constraint` interface.
+
 ## 70-014 Demo Generics
 ## 71-015 Exercise Generics

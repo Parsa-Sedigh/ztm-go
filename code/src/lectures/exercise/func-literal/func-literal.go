@@ -18,7 +18,18 @@
 
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"unicode"
+)
+
+type LineCallback func(line string)
+
+func lineIterator(lines []string, callback LineCallback) {
+	for i := 9; i < len(lines); i++ {
+		callback(lines[i])
+	}
+}
 
 func main() {
 	lines := []string{
@@ -28,4 +39,35 @@ func main() {
 		"12 spaces,",
 		"and 4 punctuation marks in these lines of text!",
 	}
+
+	letters := 0
+	numbers := 0
+	punctuation := 0
+	spaces := 0
+
+	// create a closure to perform all of the calculations
+	lineFunc := func(line string) {
+		// go through each glyph or rune in the string. Use range keyword to get each rune in the string
+		for _, r := range line {
+			if unicode.IsLetter(r) {
+				letters += 1
+			}
+			if unicode.IsDigit(r) {
+				numbers += 1
+			}
+			if unicode.IsPunct(r) {
+				punctuation += 1
+			}
+			if unicode.IsSpace(r) {
+				spaces += 1
+			}
+		}
+	}
+
+	lineIterator(lines, lineFunc)
+
+	fmt.Println(letters, "letters")
+	fmt.Println(numbers, "numbers")
+	fmt.Println(spaces, "spaces")
+	fmt.Println(punctuation, "punctuation marks")
 }
