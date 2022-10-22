@@ -27,7 +27,7 @@ When we have concurrency, we're allowed to execute multiple different lines at a
 Async code: code that can pause and resume when needed. When async code is paused, other async code can resume. So usually you only have 1 async piece of code
 running at one time and while it pauses, other pieces will be running.
 
-One of the great things about go is it automatically chooses threaded or asynchronous, so we don't have to worry abput the details on how to manage threads
+One of the great things about go is it automatically chooses threaded or asynchronous, so we don't have to worry about the details on how to manage threads
 or async code because go handles those things for us.
 
 ### Threaded execution slide:
@@ -46,8 +46,30 @@ results in a different order.
 
 
 ## 77-006 Goroutines
+
 ## 78-007 Demo Goroutines
+When we launch a goroutine using `go` keyword, main thread just keeps on going and your goroutine is doing it's own thing in the background and so you have
+2 separate threads of execution going at the same time.
+
+Closure captures are shared among all your goroutines, this makes it easy to parallelize code.
+
+To run a program multiple times(like 15 times):
+```shell
+for i in {1..15}; do go run <path to the go file> | rg ':'; done
+```
+
+Always take extra care when you're writing multi-threaded code using goroutines.
+
 ## 79-008 Exercise Goroutines
+Sine this exercise has additional data files, we need to change directory. That way our program could read it. So:
+```shell
+cd excercise/goroutines
+go run .
+```
+In this exercise, since we're doing a sum operation by just adding things together, the order of the operations don't matter, so we can have the goroutines running
+in any order and it's a non-issue. However, if we had a different operation, such as division, we would have to make sure that we have the goroutines executing in
+the proper order. This will be accomplished by using different techniques.
+
 ## 80-009 Channels
 ## 81-010 Demo Channels
 ## 82-011 Exercise Channels
