@@ -20,6 +20,8 @@ import "math/rand"
 
 type Job int
 
+/* You notice we have a Sleep() in this function, so if we try to do one call of this function one at a time, then this program will probably take anywhere from
+10 to 30 seconds to complete. */
 func longCalculation(i Job) int {
 	duration := time.Duration(rand.Intn(1000)) * time.Millisecond
 	time.Sleep(duration)
@@ -35,7 +37,32 @@ func makeJobs() []Job {
 	return jobs
 }
 
+func runJob(resultChan chan int, i Job) {
+	resultChan <- longCalculation(i)
+}
+
 func main() {
 	rand.Seed(time.Now().UnixNano())
 	jobs := makeJobs()
+
+	resultChan := make(chan int, 10)
+
+	for i := 0; i < len(jobs); i++ {
+		go runJob(resultChan, jobs[i])
+	}
+
+	resultCount := 0
+	sum := 0
+
+	for {
+		result := <-resultChan
+		sum += result
+		resultCount += 1
+
+		if resultCount == len(jobs) {
+			break
+		}
+	}
+
+	fmt.Println("sum is", sum)
 }

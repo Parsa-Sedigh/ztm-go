@@ -109,7 +109,45 @@ to show that you can utilize channels deterministically by having them as part o
 ## 81-010 Demo Channels
 ## 82-011 Exercise Channels
 ## 83-012 Synchronization
+### Mutex
+In that slide which has a pic, this is some explanation:
+
+We have some shared data which is in the middle of pic and we have goroutine A and goroutine B. Execution will be going downwards. The first thing that happens is
+goroutine A will attempt to lock the data. Since the data has no lock right now, the lock will be acquired by goroutine A and then goroutine A has
+**exclusive access to the data** until it is unlocked and the unlock operation has to be done by goroutine A.
+
+Once goroutine A unlocks data, it then becomes shared again and then goroutine B is able to acquire a lock.
+
+While goroutine A had lock acquired, goroutine B also attempted to get a lock, however we can see that goroutine B was blocked(that red text) and that's because
+the mutex was already acquired by goroutine A. While goroutine B was blocked, it's unable to execute. So those purpule dashed lines indicate that the gorutine B is
+just waiting until it can acquire lock and it's able to do so further down, because goroutine A unlocked it at that point. Once B acquires lock, then
+goroutine B can do whatever it wants with the data, then unlocks it, the data is shared again where any goroutine can access it and ... .
+
+### Deferred unlock:
+Since the defer keyword allows us to execute code when a function finishes, if we just defer the unlock operation, that means that will always make sure to unlock
+the locks no matter what happens within our functions.
+
+When you're working with mutex, it's important that they're always unlocked because a locked mutex will freeze your program if it's not properly unlocked. So
+you should almost always use `defer` **immediately** after taking your mutex lock. That way, if anything happens later on in your function, you don't have
+to worry about it, the mutex will alawys be unlocked and other goroutines will have access to the data.
+
+So far in the concurrency section, we've mostly just been waiting for the job to finish by setting a specific timeout and hoping it just finished within that time.
+Waitgroups give us much more control and allow us to wait until the goroutines are actually done with this job before continuing.
+
+What you wanna do with the waitgroups is every time you open a goroutine, you want to call the `Add()` function and add 1 , because you're making 1 goroutine and then
+within the function that has `go`, you just wanna call `Done()` when that function is finished and then Done function on waitgroup is gonna reduce that counter by 1.
+
+In the example, we used defer with wg.Done() , this way if anything happens later in the code, I don't have to worry about it, the waitgroup counter will always go down because
+of defer execution when function finishes.
+
+The wg.Wait() is gonna pause the execution of the code on that line, until the counter reaches zero again.
+
 ## 84-013 Demo WaitGroups
+When you call `wg.Wait()` , if the wg counter is greater than 0, then that code will block on the line of Wait() , until that counter reaches 0 and once that occures,
+execution will continue, which means all of our goroutines are done.
+
+Once you input your data, you can hit control + d on linux or control + z on windows to send end of file signal.
+In mac you can hit control + d twice to send this signal.
 ## 85-014 Demo Mutexes
 ## 86-015 Exercise Synchronization
 ## 87-016 Section Review Multithreaded grep
