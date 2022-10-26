@@ -71,6 +71,41 @@ in any order and it's a non-issue. However, if we had a different operation, suc
 the proper order. This will be accomplished by using different techniques.
 
 ## 80-009 Channels
+We're not able to pull out messages in the middle of the channel, so it's just one goes in and then one comes out.
+
+### multiple receive ends:
+With multiple receive ends, we can have one goroutine sending data into a channel and we can have for example 3 separate goroutines, all reading data from that
+channel. This allows us to easily split up our work across multiple goroutines.
+
+### Creating and usage:
+We may not get the results back in the same order as the previous run if we're utilizing goroutines, it could be in any order. Because the goroutines
+can place the data into the channel in a non-deterministic order.
+
+Unbuffered channels will **block** when sending, until a reader is available. This means that when your line of code executes and sends data nnto a channel,
+it will sit there on that line of code waiting until a reader in a different goroutine reads that data. Buffered channels on the other hand, have a specific capacity
+and you can send messages into the channel up to that capacity, even if there is no reader on the other end pulling data out.
+
+Channels use FIFO ordering: The first message you place into the channel, will be the first one taken out of the channel.
+
+We're not spawning a goroutine for 1 and 2, because it's buffered and so the execution will just keep continuing until the channel fills up and the channel fills up
+with 2 numbers. Now in the anonymous function, we add the third message onto the channel and this time we're inside a goroutine. That's because we only have a
+buffer capacity(capacity of the channel) of two and our program will block on the third attempt to add data. So instead of just blocking the main program,
+we create a new goroutine in that anonymous function and this goroutine within that {}, that's gonna sit there blocking until there's a room available in the channel.
+Since we already added two messages, we're unable to add anymore and that anonymous function is gonna sit there doing it's own thing as a goroutine and since it's a gorutine,
+we can continue on with our **main** program(but that anonymous function will be blocked).
+
+One difference between this program(in `` slide) and other programs, is since we're running deterministically at this point:
+```go
+channel <- 1
+channel <- 2
+```
+The above lines are running on the main thread which is running deterministically.
+we're gonna get the results out as 1 then 2 and then 3. Why 3 at the end?
+Because that goroutine on that anonymous function is only one goroutine.
+
+Generally you'll have multiple goroutines running at the same time, so it's gonna be non-deterministic most of the time. However, the tutor just wanted
+to show that you can utilize channels deterministically by having them as part of the main thread or within a single goroutine.
+
 ## 81-010 Demo Channels
 ## 82-011 Exercise Channels
 ## 83-012 Synchronization
