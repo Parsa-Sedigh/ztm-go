@@ -151,5 +151,29 @@ In mac you can hit control + d twice to send this signal.
 ## 85-014 Demo Mutexes
 ## 86-015 Exercise Synchronization
 ## 87-016 Section Review Multithreaded grep
+worklist folder is for work processing queue.
 
+In the mgrep directory, run:
+```shell
+go mod init mgrep
+```
+
+What worklist package does is it keeps track of all the files that need to be processed. So we're gonna create a channel and a few structures.
+
+When a match is found, we're gonna output 3 things(Result struct):
+- full line of text where match is found
+- indicate which line number in the file that the match is found at
+- path of the file that we're working with
+
+You can run the program on the current directory by running this in the root directory of project:
+```shell
+go run ./mgrep func . # to get every func in the texts
+```
+The first time you run the program, you'll probably get an error message and that's because we need to download the 3rd party package that we're using.
+To download that, run this on the directory that contains `go.mod`:
+```shell
+go mod tidy
+```
+
+Whenever you see sth like: `go get <url of package>`, it's best to instead run: `go mod tidy` just in case you have other modules to work with as well.
 
