@@ -10,7 +10,7 @@ func Setup(app *AppInit) {
 
 	/* create a new border layout(in bottom, we're gonna place the swatches and right, the color picker and nothing on the other sides).
 	The center content which will be our pixel canvas which we create later, will go after the colorPicker in function args.*/
-	appLayout := container.NewBorder(nil, swatchesContainer, nil, colorPicker)
+	appLayout := container.NewBorder(nil, swatchesContainer, nil, colorPicker, app.PixlCanvas)
 
 	//app.PixlWindow.SetContent(swatchesContainer)
 	app.PixlWindow.SetContent(appLayout)

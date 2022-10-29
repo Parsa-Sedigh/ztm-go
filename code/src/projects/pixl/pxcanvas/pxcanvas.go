@@ -3,6 +3,7 @@ package pxcanvas
 import (
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/canvas"
+	"fyne.io/fyne/v2/driver/desktop"
 	"fyne.io/fyne/v2/widget"
 	"image"
 	"image/color"
@@ -18,7 +19,7 @@ type PxCanvasMouseState struct {
 type PxCanvas struct {
 	widget.BaseWidget
 	apptype.PxCanvasConfig
-	renderer   *Px
+	renderer   *PxCanvasRenderer
 	PixelData  image.Image // our actual pixel image data
 	mouseState PxCanvasMouseState
 
@@ -102,4 +103,19 @@ func (pxCanvas *PxCanvas) CreateRenderer() fyne.WidgetRenderer {
 	pxCanvas.renderer = renderer
 
 	return renderer
+}
+
+/* We name this function TryPan, because our mouse functionality that we'll be creating soon will attempt to pan the image but it may not always succeed, because
+the canvas may not want to do panning. For examplem you may have to hold hotkeys or setup some different configuration that will allow the
+canvas to control whether or not panning occurs.
+
+When we do panning, we have to have a previous coordinate. So when we first try panning sth, nothing will happen and then once we move the mouse at least 1 pixel,
+the previous coordinate will be populated and so panning will work.
+
+In the fyne toolkit, the teriary mouse button represents the scroll wheel.*/
+func (pxCanvas *PxCanvas) TryPan(previousCoord *fyne.PointEvent, ev *desktop.MouseEvent) {
+	/* Make sure that the mouse button is the middle mouse buttons(we pan by holding scroll wheel on the mouse). */
+	if previousCoord != nil && ev.Button == desktop.MouseButtonTertiary {
+		pxCanvas.Pan(*previousCoord, ev.PointEvent)
+	}
 }

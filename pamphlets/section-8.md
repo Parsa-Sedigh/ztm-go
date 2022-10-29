@@ -103,7 +103,25 @@ together. Using the NRGBA allows us to easily change the alpha without having to
 ## 95-008 Pixel Canvas Renderer
 Now that we have basics of our `pxCanvas`, we need a renderer to display some stuff on the screen. So create pxcanvasrenderer.go in pxcanvas folder.
 ## 96-009 Pixel Canvas Layout
+In types.go , add `PixlCanvas` to AppInit struct. Then in pixl.go , create a pixel canvas by first creating a configuration. Then change layout.go to 
+change the layout to load our pixel canvas in layout.
+
+### Layout slide:
+The border layout has right side(in this casae, Picker), bottom side(swatches), left side and top side(nothing in this case). So we're ignoring top and left and we want to
+put our pixel canvas in the center. To place sth in the center of border layout, it should be the last arg to `NewBorder()` function.
+The args in `NewBorder` would be: top, bottom, left, right and then everything else afterwards will be included in the center.
+
 ## 97-010 Panning & Zooming
+`ops.go` in `pxcanvas` directory, represents the mouse operations.
+
+`PointEvent` is just the mouse location, the `MouseEvent` is actual buttons being pressed. 
+
+In pxcanvas directory, create mouse.go where we put our mouse events and there, we implement the interfaces needed to handle mouse movements.
+
+Now we can move the canvas by holding down the scroll wheel on mouse and move the mouse around.
+
+Also you can scroll down and up to zoom in or zoom out the canvas. 
+
 ## 98-011 Painting Pixels
 ## 99-012 Cursor Display
 ## 100-013 Creating New Images
