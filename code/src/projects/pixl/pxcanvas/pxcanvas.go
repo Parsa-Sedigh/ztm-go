@@ -119,3 +119,43 @@ func (pxCanvas *PxCanvas) TryPan(previousCoord *fyne.PointEvent, ev *desktop.Mou
 		pxCanvas.Pan(*previousCoord, ev.PointEvent)
 	}
 }
+
+// implement Brushable interface
+func (pxCanvas *PxCanvas) SetColor(c color.Color, x, y int) {
+	/* When the user loads a file, it may be in NRGBA or RGBA format. But regardless of the format, we're gonna `set` the pixel color. */
+
+	/* Our PixelData is stored in an image.Image and that's an interface and it doesn't allow us to actually `set` the image data. So here, we're accessing the underlying
+	type and we're checking to see if it's an NRGBA type? and if it is, then we have access to the Set function and we can set the x and y coordinate to a specific color(c variable)*/
+	if nrgba, ok := pxCanvas.PixelData.(*image.NRGBA); ok {
+		nrgba.Set(x, y, c)
+	}
+
+	if rgba, ok := pxCanvas.PixelData.(*image.RGBA); ok {
+		rgba.Set(x, y, c)
+	}
+
+	pxCanvas.Refresh()
+}
+
+func (pxCanvas *PxCanvas) MouseToCanvasXY(ev *desktop.MouseEvent) (*int, *int) {
+	// calculate the bounds of our canvas:
+	bounds := pxCanvas.Bounds()
+
+	// is the mouse pointer within the bounds?
+	/* The reason we're checking right away to see if the mouse is within the bounds of the canvas, is the whole point of this function is to get the X, Y coordinates in
+	the image which will be contained within the canvas and if the mouse is outside of that range, then there's no point in continuing.*/
+	if !InBounds(ev.Position, bounds) {
+		return nil, nil
+	}
+
+	// copy some information that we need:
+	pxSize := float32(pxCanvas.PxSize)
+	xOffset := pxCanvas.CanvasOffset.X
+	yOffset := pxCanvas.CanvasOffset.Y
+
+	/* Take the current position of the mouse(ev.Position.X) and take away(minus) one of the offsets and divide the result by the size of the pixels.*/
+	x := int((ev.Position.X - xOffset) / pxSize)
+	y := int((ev.Position.Y - yOffset) / pxSize)
+
+	return &x, &y
+}

@@ -107,7 +107,7 @@ In types.go , add `PixlCanvas` to AppInit struct. Then in pixl.go , create a pix
 change the layout to load our pixel canvas in layout.
 
 ### Layout slide:
-The border layout has right side(in this casae, Picker), bottom side(swatches), left side and top side(nothing in this case). So we're ignoring top and left and we want to
+The border layout has right side(in this case, Picker), bottom side(swatches), left side and top side(nothing in this case). So we're ignoring top and left and we want to
 put our pixel canvas in the center. To place sth in the center of border layout, it should be the last arg to `NewBorder()` function.
 The args in `NewBorder` would be: top, bottom, left, right and then everything else afterwards will be included in the center.
 
@@ -123,6 +123,17 @@ Now we can move the canvas by holding down the scroll wheel on mouse and move th
 Also you can scroll down and up to zoom in or zoom out the canvas. 
 
 ## 98-011 Painting Pixels
+Now it's time to start paining. So we need to implement a brush. In apptype.go , create an interface called Brushable. Now implement that interface on PxCanvas.
+So go to pxcanvas>pxcanvas.go .
+
+With MouseToCanvasXY function, we can map our mouse position to the pixel coordinates. Now we can create a brush by creating a new folder called `brush` in `pxcanvas` folder and
+create `brush.go` there.
+
+Currently, if we click, we can paint a pixel, but if we click and hold the left click, we only paint one at a time. We'll have to implement that functionality next.
+For this, in mouse.go , implement `MouseMove` function.
+
+Now we can click and drag it to paint!
+
 ## 99-012 Cursor Display
 ## 100-013 Creating New Images
 ## 101-014 Saving Images

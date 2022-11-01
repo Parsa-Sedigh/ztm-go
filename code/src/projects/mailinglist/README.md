@@ -4,9 +4,12 @@ This project requires a `gcc` compiler installed and the `protobuf` code generat
 
 ## Install protobuf compiler
 
-Install the `protoc` tool using the instructions available at [https://grpc.io/docs/protoc-installation/](https://grpc.io/docs/protoc-installation/).
+Install the `protoc` tool using the instructions available
+at [https://grpc.io/docs/protoc-installation/](https://grpc.io/docs/protoc-installation/).
 
-Alternatively you can download a pre-built binary from [https://github.com/protocolbuffers/protobuf/releases](https://github.com/protocolbuffers/protobuf/releases) and placing the extracted binary somewhere in your `$PATH`.
+Alternatively you can download a pre-built binary
+from [https://github.com/protocolbuffers/protobuf/releases](https://github.com/protocolbuffers/protobuf/releases) and
+placing the extracted binary somewhere in your `$PATH`.
 
 ## Install Go protobuf codegen tools
 
