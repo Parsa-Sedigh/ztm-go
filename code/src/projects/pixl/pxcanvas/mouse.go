@@ -17,7 +17,18 @@ func (pxCanvas *PxCanvas) Scrolled(ev *fyne.ScrollEvent) {
 func (pxCanvas *PxCanvas) MouseMoved(ev *desktop.MouseEvent) {
 	// is the mouse inside canvas?
 	if x, y := pxCanvas.MouseToCanvasXY(ev); x != nil && y != nil {
+		/* Whenever we enter into this if block, the x and y coordinates do exist. So we know that the mouse is over the canvas somewhere. That's why
+		we can draw the cursor using SetCursor() function. */
+
 		brush.TryBrush(pxCanvas.appState, pxCanvas, ev)
+
+		cursor := brush.Cursor(pxCanvas.PxCanvasConfig, pxCanvas.appState.BrushType, ev, *x, *y)
+		pxCanvas.renderer.SetCursor(cursor)
+	} else {
+		/* Once the mouse leaves the canvas area, we need to hide the cursor and to do that, we just need to add an else block. So once we move the mouse and
+		exit the canvas area and call refresh(after this else block), there's not gonna be any cursor objects to draw on the screen, as we just set it to zero objects in this
+		else block and this will effectively hide the cursor if you move the mouse outside the canvas.*/
+		pxCanvas.renderer.SetCursor(make([]fyne.CanvasObject, 0))
 	}
 	pxCanvas.TryPan(pxCanvas.mouseState.previousCoord, ev)
 	pxCanvas.Refresh()

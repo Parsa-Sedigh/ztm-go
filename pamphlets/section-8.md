@@ -135,6 +135,12 @@ For this, in mouse.go , implement `MouseMove` function.
 Now we can click and drag it to paint!
 
 ## 99-012 Cursor Display
+In brush.go , create a function named `Cursor`.
+
+Now that we have a functional canvas, we need to be able to work with files, including saving and loading.
+
 ## 100-013 Creating New Images
+Now that we can create files, we need to be able to save the files which we're gonna do in the next lecture.
 ## 101-014 Saving Images
 ## 102-015 Loading Images
+Create the functionality of opening existing image files.

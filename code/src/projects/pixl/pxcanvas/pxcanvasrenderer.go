@@ -12,6 +12,7 @@ type PxCanvasRenderer struct {
 
 	// we're gonna use a SLICE of lines to draw a border around our canvas
 	canvasBorder []canvas.Line
+	canvasCursor []fyne.CanvasObject
 }
 
 // WidgetRenderer interface implementation
@@ -32,6 +33,7 @@ func (renderer *PxCanvasRenderer) Objects() []fyne.CanvasObject {
 
 	// append the image
 	objects = append(objects, renderer.canvasImage)
+	objects = append(objects, renderer.canvasCursor...)
 
 	return objects
 }
@@ -116,4 +118,8 @@ func (renderer *PxCanvasRenderer) LayoutBorder(size fyne.Size) {
 	bottom := &renderer.canvasBorder[1]
 	bottom.Position1 = fyne.NewPos(offset.X, offset.Y+imgHeight)
 	bottom.Position2 = fyne.NewPos(offset.X+imgWidth, offset.Y+imgHeight)
+}
+
+func (renderer *PxCanvasRenderer) SetCursor(objects []fyne.CanvasObject) {
+	renderer.canvasCursor = objects
 }

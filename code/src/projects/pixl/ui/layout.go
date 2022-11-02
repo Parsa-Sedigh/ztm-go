@@ -5,6 +5,7 @@ import "fyne.io/fyne/v2/container"
 /* this function will setup all of the different UI elements.
 We'll preodically come back to this Setup function to add new UI elements as we create them. */
 func Setup(app *AppInit) {
+	SetupMenus(app)
 	swatchesContainer := BuildSwatches(app)
 	colorPicker := SetupColorPicker(app)
 
