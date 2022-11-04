@@ -15,7 +15,7 @@ type EmailEntry struct {
 	OptOut      bool // whether or not they opted out of getting email
 }
 
-// a function to make a DB
+// a function to make a DB. It will use an existing DB or create a new one if it doesn't exist.
 func TryCreate(db *sql.DB) {
 	_, err := db.Exec(`
 	CREATE TABLE emails (
@@ -110,7 +110,7 @@ func UpdateEmail(db *sql.DB, entry EmailEntry) error {
 		INSERT INTO emails(email, confirmed_at, opt_out)
 		VALUES (?, ?, ?) 
 		ON CONFLICT(email) DO UPDATE SET
-			confirmed_at=?
+			confirmed_at=?,
 			opt_out=?`, entry.Email, t, entry.OptOut, t, entry.OptOut)
 	if err != nil {
 		log.Println(err)
